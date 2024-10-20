@@ -31,14 +31,17 @@ void drawA(Publisher &pub, ServiceClient &teleport_client, turtlesim::TeleportAb
     moveTurtle(pub, 0, -1.0, 2); // Rotate ke kiri bawah
     moveTurtle(pub, 1.0, 0, 2); // Move diagonally downward
 
-    moveTurtle(pub,0, 1.57, 2);
+    // Kembali ke atas untuk membuat - di "A"
+    moveTurtle(pub,0, 1.57, 2); 
     moveTurtle(pub, 0.6, 0, 2);
     moveTurtle(pub, 0, 0.48, 2);
     moveTurtle(pub,0.43, 0, 2);
 
+    // Kembali ke kanan
     moveTurtle(pub, 0, -1.57, 2);
     moveTurtle(pub, 0.43, 0, 2);
 
+    // Kembali ke bawah
     moveTurtle(pub, 0, -0.48, 2);
     moveTurtle(pub, 0.6, 0, 2);
 }
@@ -49,7 +52,7 @@ void drawD(Publisher &pub, ServiceClient &teleport_client, turtlesim::TeleportAb
     teleport_srv.request.theta = 0.0; // Reset sudut
     teleport_client.call(teleport_srv);
 
-    // Draw the letter
+    // Menggambar D
     moveTurtle(pub, 0, 0.785, 2); // Mengubah sudut ke arah atas
     moveTurtle(pub, 1.0, 0, 2); // Move straight upward
     moveTurtle(pub, 0, -0.785, 2); // Mengeubah sudut ke arah kanan
@@ -62,24 +65,25 @@ void drawI(Publisher &pub, ServiceClient &teleport_client, turtlesim::TeleportAb
     teleport_srv.request.theta = 0.0; // Orientation (angle)
     teleport_client.call(teleport_srv);
 
-    // Draw the letter
+    // Menggambar I
     moveTurtle(pub, 0, 0.785, 2); // Menggok mas pokoke
     moveTurtle(pub, 1.0, 0.0, 2); // Maju maju maju
 }
 
 void drawT(Publisher &pub, ServiceClient &teleport_client, turtlesim::TeleportAbsolute &teleport_srv) {
     teleport_srv.request.x = (teleport_srv.request.x); // Pertahankan posisi X
-    teleport_srv.request.y = (teleport_srv.request.y); // Turun
+    teleport_srv.request.y = (teleport_srv.request.y); // Ke posisi Y awal
     teleport_client.call(teleport_srv);
 
     teleport_srv.request.x = (teleport_srv.request.x+1.6); // Pindah 1.6 unit ke kanan dari posisi akhir huruf "I"
     teleport_srv.request.y = (teleport_srv.request.y); // Pertahankan posisi Y
     teleport_client.call(teleport_srv);
 
-    // Draw vertical line
-    moveTurtle(pub, 0  , 0.785, 2);
-    moveTurtle(pub, 1.0, 0.0  , 2); // Move straight downward
+    // Menggambar vertical line
+    moveTurtle(pub, 0  , 0.785, 2); // Mengubah sudut
+    moveTurtle(pub, 1.0, 0.0  , 2); // Move straight
 
+    // Menggambar - di "T"
     moveTurtle(pub,0, 0.785, 2);
     moveTurtle(pub,0.6, 0, 2);
     moveTurtle(pub,0, 1.57, 2);
@@ -90,7 +94,7 @@ int main(int argc, char** argv) {
     init(argc, argv, "draw_adit");
     NodeHandle nh;
 
-    // Create a publisher for turtle movement
+    // Create a publisher
     Publisher pub = nh.advertise<geometry_msgs::Twist>("/turtle1/cmd_vel", 10);
 
     // Create a service client for teleporting the turtle
@@ -100,7 +104,7 @@ int main(int argc, char** argv) {
     teleport_srv.request.y = 5.0; // Y position (bottom left of "A")
     teleport_client.call(teleport_srv);
 
-    // Reset Turtlesim
+    // Reset Turtlesim Tiap Gambar
     system("rosservice call /clear");
 
     // Draw each letter
